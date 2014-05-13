@@ -18,11 +18,11 @@ class Piece
   end 
   
   def has_ally?(pos)
-    !@board[pos].nil? && @board[pos].color == self.color
+    !@board.empty?(pos) && @board[pos].color == self.color
   end
   
   def has_opponent?(pos)
-    !@board[pos].nil? && @board[pos].color != self.color
+    !@board.empty?(pos) && @board[pos].color != self.color
   end
   
   
@@ -76,7 +76,7 @@ class SteppingPiece < Piece
   end
   
   def valid_pos?(pos)
-    in_board?(pos) && (has_opponent?(pos) || @board[pos].nil?)
+    in_board?(pos) && (has_opponent?(pos) || @board.empty?(pos))
   end
   
 end
