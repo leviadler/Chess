@@ -1,3 +1,4 @@
+# encoding: utf-8
 require "./board"
 class Piece
   attr_reader :color,:position
@@ -85,19 +86,33 @@ class Bishop < SlidingPiece
     [[1,1], [-1,-1], [1,-1], [-1,1]]
   end
   
+  def to_s
+    (color == :w) ? "♗" : "♝"
+  end
+  
 end
 
 class Rook < SlidingPiece
+  
   def move_dirs
     [[0,1], [-1,0], [1,0], [0,-1]]
   end
+  
+  def to_s
+    (color == :w) ? "♖" : "♜"
+  end
 end
+
 
 class Queen < SlidingPiece
   
   def move_dirs
     [[1,1], [-1,-1], [1,-1], [-1,1],
     [0,1], [-1,0], [1,0], [0,-1]]
+  end
+  
+  def to_s
+     (color == :w) ? "♕" : "♛"
   end
   
 end
@@ -111,6 +126,10 @@ class Knight < SteppingPiece
      [-1, 2], [-1, -2]]
   end
   
+  def to_s
+    (color == :w) ? "♘" : "♞"
+  end
+  
 end
 
 class King < SteppingPiece
@@ -118,6 +137,10 @@ class King < SteppingPiece
   def move_dirs
     [[1,1], [-1,-1], [1,-1], [-1,1],
     [0,1], [-1,0], [1,0], [0,-1]]
+  end
+  
+  def to_s
+    (color == :w) ? "♔" : "♚"
   end
   
 end
@@ -155,6 +178,10 @@ class Pawn < Piece
     (self.color == :w && self.position[0] == 1) ||
     (self.color == :b && self.position[0] == 6)
   end
+  
+  def to_s
+    (color == :w) ? "♙" : "♟"
+  end
       
   
 end
@@ -164,10 +191,10 @@ end
 if __FILE__ == $PROGRAM_NAME
   b = Board.new
   p1 = Queen.new(:b,[2,2],b)
-  p2 = Pawn.new(:w,[1,1],b)
-  b[[2,2]] = p1
-  b[[1,1]] = p2 
+  #p2 = Pawn.new(:w,[1,1],b)
+  #b[[2,2]] = p1
+  #b[[1,1]] = p2 
   print b
   
-  p p2.moves
+  
 end
