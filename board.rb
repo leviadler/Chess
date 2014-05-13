@@ -17,6 +17,10 @@ class Board
     @grid[x][y] = value
   end
   
+  def empty?(pos)
+    self[pos].nil?
+  end
+  
   def to_s
     puts "     a  b  c  d  e  f  g  h"
     puts "     0  1  2  3  4  5  6  7 "  #for debugging
@@ -61,6 +65,10 @@ class Board
     end
   end
   
+  def move(start, end_pos)
+    
+  end
+  
   protected
   def setup_board
     setup_pawns(1, :w)
@@ -71,6 +79,8 @@ class Board
       
   end
   
+  # maybe refactor to take out '@grid[row][0] = ' 
+  # since Piece class can set pos on board
   def setup_pawns(row,color)
     @grid[row].each_index do |j|
       self[[row,j]] = Pawn.new(color,[row,j],self)
