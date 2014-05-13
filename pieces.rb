@@ -1,7 +1,8 @@
 # encoding: utf-8
 require "./board"
 class Piece
-  attr_reader :color,:position
+  attr_reader :color
+  attr_accessor :position
   def initialize(color,position,board)
     @board = board
     @position = position
@@ -18,11 +19,11 @@ class Piece
   end 
   
   def has_ally?(pos)
-    !@board.empty?(pos) && @board[pos].color == self.color
+    !@board[pos].nil? && @board[pos].color == self.color
   end
   
   def has_opponent?(pos)
-    !@board.empty?(pos) && @board[pos].color != self.color
+    !@board[pos].nil? && @board[pos].color != self.color
   end
   
   
@@ -76,7 +77,7 @@ class SteppingPiece < Piece
   end
   
   def valid_pos?(pos)
-    in_board?(pos) && (has_opponent?(pos) || @board.empty?(pos))
+    in_board?(pos) && (has_opponent?(pos) || @board[pos].nil?)
   end
   
 end
@@ -156,10 +157,13 @@ class Pawn < Piece
       new_position = [@position[0] + a, @position[1] + b]
       possible_moves << new_position if valid_side_pos?(new_position)
     end 
-    
+    p forward_directions
     forward_directions.each do |a,b|
       new_position = [@position[0] + a, @position[1] + b]
+      p "pos", @position
+      p "new", new_position
       possible_moves << new_position if @board[new_position].nil?
+      #p possible_moves
     end 
     possible_moves
   end
@@ -169,15 +173,15 @@ class Pawn < Piece
   end
   
   def move_dirs
-    forward_directions = [[0,1]]
-    forward_directions << [0,2] if first_move?
-    side_directions  = [[1,1],[-1,1]]
+    forward_directions = [[1,0]]
+    forward_directions << [2,0] if first_move?
+    side_directions  = [[1,1],[1,-1]]
     [forward_directions,side_directions]
   end  
   
   def first_move?
-    (self.color == :w && self.position[0] == 1) ||
-    (self.color == :b && self.position[0] == 6)
+    (self.color == :w && self.position[0] == 6) ||
+    (self.color == :b && self.position[0] == 1)
   end
   
   def to_s
@@ -191,11 +195,11 @@ end
 
 if __FILE__ == $PROGRAM_NAME
   b = Board.new
-  p1 = Queen.new(:b,[2,2],b)
+  p1 = Pawn.new(:w,[1,1],b)
   #p2 = Pawn.new(:w,[1,1],b)
   #b[[2,2]] = p1
   #b[[1,1]] = p2 
-  print b
+  p p1.moves
   
   
 end
