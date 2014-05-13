@@ -4,8 +4,7 @@ require "./pieces"
 class Board
   def initialize
     @grid = Array.new(8){Array.new(8)}
-    setup_board
-   
+    setup_board 
   end 
   
   def [](pos)
@@ -117,14 +116,13 @@ if __FILE__ == $PROGRAM_NAME
   print b
   
   puts
-  b.move([1,2], [3,2])
+  b.move([6,2], [4,2])
   print b
-  p b[[3,2]].moves
-  b.move([3,2], [4,2])
+  b.move([4,2], [3,2])
   print b
-  b.move([4,2], [5,2])
+  b.move([3,2], [2,2])
   print b
-  b.move([5,2], [6,3])
+  b.move([2,2], [1,2])
   print b
 end
 

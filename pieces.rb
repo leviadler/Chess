@@ -10,6 +10,11 @@ class Piece
     @board[position] = self
   end
   
+  # work in progress
+  def dup(new_board)
+    self.class.new(self.color,self.position,new_board)
+  end
+  
   def moves
     raise UnimplementedError
   end
@@ -173,9 +178,10 @@ class Pawn < Piece
   end
   
   def move_dirs
-    forward_directions = [[1,0]]
-    forward_directions << [2,0] if first_move?
-    side_directions  = [[1,1],[1,-1]]
+    sym = self.color == :w ? -1 : 1  
+    forward_directions = [[(sym * 1),0]]
+    forward_directions << [(sym * 2),0] if first_move?
+    side_directions  = [[(sym * 1),1],[(sym * 1),-1]]
     [forward_directions,side_directions]
   end  
   
