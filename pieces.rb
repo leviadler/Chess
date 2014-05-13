@@ -1,3 +1,4 @@
+require "./board"
 class Piece
   attr_reader :color,:position
   def initialize(color,position,board)
