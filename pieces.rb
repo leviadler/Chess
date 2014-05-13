@@ -12,14 +12,23 @@ class Piece
   end
   
   def in_board?(position)
-    position.all? {|coord| coord >= 0 && coord < 8 }
+    position.all? {|coord| (coord >= 0) && (coord < 8) }
   end 
+  
+  def has_ally?(pos)
+    !@board[pos].nil? && @board[pos].color == self.color
+  end
+  
+  def has_opponent?(pos)
+    !has_ally?(pos)
+  end
+  
   
 end
 
 class SlidingPiece < Piece
   def moves
-    directions = self.move_dirs
+    directions = move_dirs
     
     possible_moves = []
     directions.each do |direction|
@@ -37,7 +46,7 @@ class SlidingPiece < Piece
       new_position = [x,y]
       square = @board[new_position]
       
-      break if !square.nil? && square.color == self.color
+      break if has_ally?(new_position)
       
       positions << new_position
       
@@ -55,16 +64,17 @@ class SteppingPiece < Piece
   def moves
     directions = move_dirs
     
-    positions = directions.map  do |a,b|
-      [@position[0] + a, @position[1] + b]
-    end.select do |possition|
-      in_board?(possition)
+    possible_moves = []
+    directions.each do |a,b| 
+      new_position = [@position[0] + a, @position[1] + b]
+      possible_moves << new_position if valid_pos?(new_position)
     end
     
-    positions.delete_if do |pos|
-      !@board[pos].nil? && @board[pos].color == self.color
-    end
-    positions
+    possible_moves
+  end
+  
+  def valid_pos?(pos)
+    in_board?(pos) && (has_opponent?(pos) || @board[pos].nil?)
   end
   
 end
@@ -112,15 +122,37 @@ class King < SteppingPiece
   
 end
 
+class Pawn < Piece
+  
+  def moves
+    directions = move_dirs
+    possible_positions =[]
+    
+    directions.each do |a,b|
+      new_position = [@position[0] + a, @position[1] + b]
+      possible_moves << new_position if valid_pos?(new_position)
+    end 
+    
+    
+  end
+  
+  def move_dirs
+    directions = [[1,1],[-1,1],[0,1]]
+    directions << [0,2] if first_move?
+    directions
+  end  
+  
+end
+
 
 
 if __FILE__ == $PROGRAM_NAME
   b = Board.new
   p1 = Queen.new(:b,[0,0],b)
-  p2 = Queen.new(:w,[0,5],b)
+  p2 = King.new(:b,[0,1],b)
   b[[0,0]] = p1
-  b[[0,5]] = p2 
+  b[[0,1]] = p2 
   print b
   
-  p p2.moves
+  p p1.moves
 end
