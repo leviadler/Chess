@@ -20,7 +20,7 @@ class Piece
   end
   
   def has_opponent?(pos)
-    !has_ally?(pos)
+    !@board[pos].nil? && @board[pos].color != self.color
   end
   
   
@@ -163,11 +163,11 @@ end
 
 if __FILE__ == $PROGRAM_NAME
   b = Board.new
-  p1 = Queen.new(:b,[0,0],b)
-  p2 = King.new(:b,[0,1],b)
-  b[[0,0]] = p1
-  b[[0,1]] = p2 
+  p1 = Queen.new(:b,[2,2],b)
+  p2 = Pawn.new(:w,[1,1],b)
+  b[[2,2]] = p1
+  b[[1,1]] = p2 
   print b
   
-  p p1.moves
+  p p2.moves
 end
