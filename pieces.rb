@@ -10,6 +10,11 @@ class Piece
   def moves
     raise UnimplementedError
   end
+  
+  def in_board?(position)
+    position.all? {|coord| coord >= 0 && coord < 8 }
+  end 
+  
 end
 
 class SlidingPiece < Piece
@@ -24,22 +29,20 @@ class SlidingPiece < Piece
   end
   
   def generate_positions(direction)
-    x,y = @position[0],@position[1]
-    a,b = direction[0],direction[1]
-    x, y = x+a, y+b
+    a, b = direction[0],direction[1]
+    x, y = @position.first + a, @position.last + b
     
     positions = []
-    while (x >= 0 && x < 8) && (y >= 0 && y < 8)
+    while in_board?([x,y])
       new_position = [x,y]
-      p "new pos"
-      p new_position
-      unless @board[new_position].nil? 
-        unless @board[new_position].color == self.color
-          positions << new_position
-        end
-        break
-      end
+      square = @board[new_position]
+      
+      break if !square.nil? && square.color == self.color
+      
       positions << new_position
+      
+      break unless square.nil?
+      
       x, y = x+a, y+b
     end
     
@@ -55,7 +58,7 @@ class SteppingPiece < Piece
     positions = directions.map  do |a,b|
       [@position[0] + a, @position[1] + b]
     end.select do |possition|
-      position.all? {|coord| coord >= 0 && coord < 8 }
+      in_board?(possition)
     end
     
     positions.delete_if do |pos|
@@ -114,7 +117,7 @@ end
 if __FILE__ == $PROGRAM_NAME
   b = Board.new
   p1 = Queen.new(:b,[0,0],b)
-  p2 = Queen.new(:b,[0,5],b)
+  p2 = Queen.new(:w,[0,5],b)
   b[[0,0]] = p1
   b[[0,5]] = p2 
   print b
