@@ -125,22 +125,37 @@ end
 class Pawn < Piece
   
   def moves
-    directions = move_dirs
-    possible_positions =[]
+    forward_directions,side_directions = move_dirs
+    possible_moves =[]
     
-    directions.each do |a,b|
+    side_directions.each do |a,b|
       new_position = [@position[0] + a, @position[1] + b]
-      possible_moves << new_position if valid_pos?(new_position)
+      possible_moves << new_position if valid_side_pos?(new_position)
     end 
     
-    
+    forward_directions.each do |a,b|
+      new_position = [@position[0] + a, @position[1] + b]
+      possible_moves << new_position if @board[new_position].nil?
+    end 
+    possible_moves
+  end
+  
+  def valid_side_pos?(pos)
+    in_board?(pos) && has_opponent?(pos)
   end
   
   def move_dirs
-    directions = [[1,1],[-1,1],[0,1]]
-    directions << [0,2] if first_move?
-    directions
+    forward_directions = [[0,1]]
+    forward_directions << [0,2] if first_move?
+    side_directions  = [[1,1],[-1,1]]
+    [forward_directions,side_directions]
   end  
+  
+  def first_move?
+    (self.color == :w && self.position[0] == 1) ||
+    (self.color == :b && self.position[0] == 6)
+  end
+      
   
 end
 
