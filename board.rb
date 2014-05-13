@@ -4,7 +4,7 @@ require "./pieces"
 class Board
   def initialize
     @grid = Array.new(8){Array.new(8)}
-    setup_board
+    #setup_board
   end 
   
   def [](pos)
@@ -32,9 +32,36 @@ class Board
       end
       print "\n"
     end
-    
   end
+  
+  def in_check?(color)
+    king_pos = find_king(color)
+    other_color = (color == :w ? :b : :w)
     
+    opponent_pieces = find_pieces(other_color)
+    
+    opponent_pieces.each do |piece|
+      return true if piece.moves.include?(king_pos)
+    end
+    
+    false
+  end
+  
+  def find_pieces(color)
+    @grid.flatten.select do |piece|
+      piece.is_a?(Piece) && piece.color == color
+    end
+  end
+  
+  def find_king(color)
+    @grid.flatten.each do |piece|
+      if piece.is_a?(King) && piece.color == color
+        return piece.position
+      end
+    end
+  end
+  
+  protected
   def setup_board
     setup_pawns(1, :w)
     setup_pawns(6, :b)
@@ -64,3 +91,14 @@ class Board
     @grid[row][4] = King.new(color, [row, 4], self)
   end
 end
+
+
+if __FILE__ == $PROGRAM_NAME
+  b = Board.new
+  k=King.new(:w,[0,0],b)
+  q=Queen.new(:w,[0,5],b)
+  print b
+  puts
+  p b.in_check?(:w)
+end
+
