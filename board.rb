@@ -8,10 +8,10 @@ end
 
 class Board
   
-  NUM_ROWS = 8
+  BOARD_SIZE = 8
   
   def initialize(setup = false)
-    @grid = Array.new(NUM_ROWS){Array.new(NUM_ROWS)}
+    @grid = Array.new(BOARD_SIZE){Array.new(BOARD_SIZE)}
     setup_board if setup
   end 
   
@@ -32,20 +32,24 @@ class Board
   
   def dup
     new_board = Board.new
-    @grid.flatten.each do |piece|
-      piece.dup(new_board) unless piece.nil?
+    pieces.each do |piece|
+      piece.dup(new_board)
     end
     new_board
   end
   
-  def to_s
+  def pieces
+    @grid.flatten.compact
+  end
+  
+  def render
     system "clear"
     puts "   a  b  c  d  e  f  g  h"
     #puts "     0  1  2  3  4  5  6  7 "  #for debugging
-    NUM_ROWS.times do |x|
-      print "#{NUM_ROWS-x} " 
+    BOARD_SIZE.times do |x|
+      print "#{BOARD_SIZE-x} " 
       #print "#{x} "    #for debugging
-      NUM_ROWS.times do |y|
+      BOARD_SIZE.times do |y|
         str = self[[x,y]].nil? ? "   " : " #{self[[x,y]]} "
         if (x + y).odd?
           print str.colorize( :background => :light_black)
@@ -58,29 +62,25 @@ class Board
   end
   
   def in_check?(color)
-    king_pos = find_king(color)
+    king = find_king(color)
     other_color = (color == :w ? :b : :w)
     
     opponent_pieces = find_pieces(other_color)
     
-    opponent_pieces.each do |piece|
-      return true if piece.moves.include?(king_pos)
+    opponent_pieces.any? do |piece|
+      piece.moves.include?(king.position)
     end
-    
-    false
   end
   
   def find_pieces(color)
-    @grid.flatten.select do |piece|
-      piece.is_a?(Piece) && piece.color == color
+    pieces.select do |piece|
+      piece.color == color
     end
   end
   
   def find_king(color)
-    @grid.flatten.each do |piece|
-      if piece.is_a?(King) && piece.color == color
-        return piece.position
-      end
+    find_pieces(color).find do |piece|
+      piece.is_a?(King)
     end
   end
   
@@ -129,9 +129,9 @@ class Board
   end
   
   def setup_back(row, color)
-    peices = [Rook, Knight, Bishop, Queen, King, Bishop, Knight, Rook]
+    back_row = [Rook, Knight, Bishop, Queen, King, Bishop, Knight, Rook]
     
-    peices.each_with_index do |piece, col|
+    back_row.each_with_index do |piece, col|
       piece.new(color, [row, col], self)
     end
   end

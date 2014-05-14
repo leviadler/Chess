@@ -14,7 +14,7 @@ class Game
   def play
     
     until @board.over?
-      puts @board
+      @board.render
       begin
         start_pos, end_pos = @players.first.play_turn
         check_color(start_pos,@players.first)
@@ -27,7 +27,7 @@ class Game
     end
     
     
-    puts @board
+    @board.render
     puts "Checkmate! #{@players.last.name}, you won!"
     
   end
