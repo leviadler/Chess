@@ -2,9 +2,9 @@
 require "./pieces"
 
 class Board
-  def initialize
+  def initialize(setup = false)
     @grid = Array.new(8){Array.new(8)}
-    setup_board 
+    setup_board if setup
   end 
   
   def [](pos)
@@ -137,7 +137,7 @@ end
 
 
 if __FILE__ == $PROGRAM_NAME
-  b = Board.new
+  b = Board.new(true)
   #k=King.new(:w,[0,0],b)
   #q=Queen.new(:w,[0,5],b)
   print b

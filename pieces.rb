@@ -20,7 +20,7 @@ class Piece
   end
   
   def valid_moves
-    self.moves.select {|move| !move_into_check?(move) }
+    self.moves.reject {|move| move_into_check?(move) }
   end
   
   def move_into_check?(pos)
