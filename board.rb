@@ -1,6 +1,10 @@
 # encoding: utf-8
 require "./pieces"
 
+
+class InvalidMoveError < StandardError
+end
+
 class Board
   def initialize(setup = false)
     @grid = Array.new(8){Array.new(8)}
@@ -83,12 +87,12 @@ class Board
   end
   
   def move(start, end_pos)
-    raise "No piece to move at #{start}" if empty?(start)
+    raise InvalidMoveError, "No piece to move at #{start}" if empty?(start)
     
     piece = self[start]
     
-    raise "Invalid move!" unless piece.moves.include?(end_pos)
-    raise "Invalid move into check!" unless piece.valid_moves.include?(end_pos)
+    raise InvalidMoveError, "Invalid move!" unless piece.moves.include?(end_pos)
+    raise InvalidMoveError, "Invalid move into check!" unless piece.valid_moves.include?(end_pos)
     
     self[start] = nil
     self[end_pos] = piece
@@ -102,6 +106,10 @@ class Board
       end
     end
     find_pieces(color).all? {|piece| piece.valid_moves.empty? }
+  end
+  
+  def over?
+    checkmate?(:w) || checkmate(:b)
   end
   
   protected
@@ -141,7 +149,7 @@ if __FILE__ == $PROGRAM_NAME
   #k=King.new(:w,[0,0],b)
   #q=Queen.new(:w,[0,5],b)
   print b
-  b.move!([7,3], [2,6])
+  b.move([7,3], [2,6])
   print b
   b.move!([1,5], [2,5])
   print b

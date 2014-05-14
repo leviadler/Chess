@@ -1,5 +1,6 @@
 # encoding: utf-8
 require "./board"
+
 class Piece
   attr_reader :color
   attr_accessor :position
