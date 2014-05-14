@@ -1,11 +1,15 @@
 # encoding: utf-8
 require "./pieces"
+require "colorize"
 
 
 class InvalidMoveError < StandardError
 end
 
 class Board
+  
+  NUM_ROWS = 8
+  
   def initialize(setup = false)
     @grid = Array.new(8){Array.new(8)}
     setup_board if setup
@@ -38,15 +42,16 @@ class Board
     system "clear"
     puts "     a  b  c  d  e  f  g  h"
     puts "     0  1  2  3  4  5  6  7 "  #for debugging
-    8.times do |x|
-      print "#{x+1} " 
+    NUM_ROWS.times do |x|
+      print "#{NUM_ROWS-x} " 
       print "#{x} "    #for debugging
-      8.times do |y|
-        if self[[x,y]].nil?
-          print "[ ]"
-          next
+      NUM_ROWS.times do |y|
+        str = self[[x,y]].nil? ? "   " : " #{self[[x,y]]} "
+        if (x + y).odd?
+          print str.colorize( :background => :light_black)
+        else
+          print str
         end
-        print "[#{self[[x,y]]}]"
       end
       print "\n"
     end
