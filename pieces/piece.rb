@@ -11,7 +11,7 @@ class Piece
   end
   
   def dup(new_board)
-    self.class.new(self.color,self.position,new_board)
+    self.class.new(self.color, self.position, new_board)
   end
   
   def moves
@@ -19,7 +19,7 @@ class Piece
   end
   
   def valid_moves
-    self.moves.reject {|move| move_into_check?(move) }
+    self.moves.reject { |move| move_into_check?(move) }
   end
   
   def move_into_check?(pos)
@@ -29,15 +29,15 @@ class Piece
   end
   
   def in_board?(position)
-    position.all? {|coord| (coord >= 0) && (coord < 8) }
+    position.all? { |coord| coord.between?(0,7) }
   end 
   
   def has_ally?(pos)
-    !@board[pos].nil? && @board[pos].color == self.color
+    @board[pos] && @board[pos].color == self.color
   end
   
   def has_opponent?(pos)
-    !@board[pos].nil? && @board[pos].color != self.color
+    @board[pos] && @board[pos].color != self.color
   end
    
 end

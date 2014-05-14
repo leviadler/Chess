@@ -11,7 +11,7 @@ class Board
   BOARD_SIZE = 8
   
   def initialize(setup = false)
-    @grid = Array.new(BOARD_SIZE){Array.new(BOARD_SIZE)}
+    @grid = Array.new(BOARD_SIZE) { Array.new(BOARD_SIZE) }
     setup_board if setup
   end 
   

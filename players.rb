@@ -21,6 +21,7 @@ class HumanPlayer < Player
     puts "#{@name}, you are #{color_to_s}."
     puts "Choose the piece you want to move? (ex. f2)"
     start_pos = get_input
+    
     puts "Choose the location you want to move to:"
     end_pos = get_input
     
@@ -34,9 +35,11 @@ class HumanPlayer < Player
   def get_input
     input = gets.chomp.squeeze.split("")
     pos = [ROW_NUMBERS.index(input.last), COL_LETTERS.index(input.first)]
-    if pos.any? {|p| p.nil? }
-      raise InvalidMoveError, "That is not a location on the board!"
+    
+    if pos.include?(nil)
+      raise InvalidMoveError, "That is not a location on the board!" 
     end
+   
     pos
   end
   

@@ -12,10 +12,13 @@ class Pawn < Piece
   end
   
   def move_dirs
-    sym = self.color == :w ? -1 : 1  
-    forward_directions = [[(sym * 1),0]]
-    forward_directions << [(sym * 2),0] if first_move?
-    side_directions  = [[(sym * 1),1],[(sym * 1),-1]]
+    sym = self.color == :w ? -1 : 1 
+    
+    forward_directions = [[(sym * 1), 0]]
+    forward_directions << [(sym * 2), 0] if first_move?
+    
+    side_directions  = [[(sym * 1), 1], [(sym * 1), -1]]
+    
     [forward_directions, side_directions]
   end  
   
@@ -25,7 +28,7 @@ class Pawn < Piece
   end
   
   def generate_side_dirs(directions)
-    directions.select do |a,b|
+    directions.select do |a, b|
       new_position = [@position[0] + a, @position[1] + b]
       valid_side_pos?(new_position)
     end 
@@ -33,11 +36,13 @@ class Pawn < Piece
   
   def generate_forward_dirs(directions)
     forward_directions = []
-    directions.map do |a,b|
+    
+    directions.map do |a, b|
       new_position = [@position[0] + a, @position[1] + b]
       break unless @board[new_position].nil? #stops jumping piece on first move
       forward_directions << new_position
     end
+    
     forward_directions
   end
   

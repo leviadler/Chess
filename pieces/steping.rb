@@ -3,10 +3,9 @@ require_relative 'piece'
 class SteppingPiece < Piece
   
   def moves
-    directions = move_dirs
-    
     possible_moves = []
-    directions.each do |a,b| 
+    
+    move_dirs.each do |a, b| 
       new_position = [@position[0] + a, @position[1] + b]
       possible_moves << new_position if valid_pos?(new_position)
     end
