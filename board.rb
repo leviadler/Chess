@@ -40,7 +40,7 @@ class Board
   
   def to_s
     system "clear"
-    puts "     a  b  c  d  e  f  g  h"
+    puts "   a  b  c  d  e  f  g  h"
     #puts "     0  1  2  3  4  5  6  7 "  #for debugging
     NUM_ROWS.times do |x|
       print "#{NUM_ROWS-x} " 

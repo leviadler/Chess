@@ -3,6 +3,7 @@ require "./pieces"
 require "./players"
 
 class Game
+  
   def initialize(player1, player2)
     @board = Board.new(true)
     player1.color = :w

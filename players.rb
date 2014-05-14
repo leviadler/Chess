@@ -33,8 +33,11 @@ class HumanPlayer < Player
   
   def get_input
     input = gets.chomp.squeeze.split("")
-    [ROW_NUMBERS.index(input.last), 
-      COL_LETTERS.index(input.first)]
+    pos = [ROW_NUMBERS.index(input.last), COL_LETTERS.index(input.first)]
+    if pos.any? {|p| p.nil? }
+      raise InvalidMoveError, "That is not a location on the board!"
+    end
+    pos
   end
   
 end
