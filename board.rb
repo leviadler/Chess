@@ -35,6 +35,7 @@ class Board
   end
   
   def to_s
+    system "clear"
     puts "     a  b  c  d  e  f  g  h"
     puts "     0  1  2  3  4  5  6  7 "  #for debugging
     8.times do |x|
@@ -99,17 +100,11 @@ class Board
   end
   
   def checkmate?(color)
-    find_pieces(color).each do |piece| 
-      if !piece.valid_moves.empty?
-        p piece.position
-        p piece.valid_moves
-      end
-    end
     find_pieces(color).all? {|piece| piece.valid_moves.empty? }
   end
   
   def over?
-    checkmate?(:w) || checkmate(:b)
+    checkmate?(:w) || checkmate?(:b)
   end
   
   protected
