@@ -129,17 +129,12 @@ class Board
   end
   
   def setup_back(row, color)
-    Rook.new(color, [row, 0], self)
-    Rook.new(color, [row, 7], self)
+    peices = [Rook, Knight, Bishop, Queen, King, Bishop, Knight, Rook]
     
-    Knight.new(color, [row, 1], self)
-    Knight.new(color, [row, 6], self)
-    
-    Bishop.new(color, [row, 2], self)
-    Bishop.new(color, [row, 5], self)
-    
-    Queen.new(color, [row, 3], self)
-    King.new(color, [row, 4], self)
+    peices.each_with_index do |piece, col|
+      piece.new(color, [row, col], self)
+    end
+
   end
 end
 

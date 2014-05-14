@@ -3,7 +3,7 @@ require_relative 'piece'
 class Pawn < Piece
   
   def moves
-    forward_directions,side_directions = move_dirs
+    forward_directions, side_directions = move_dirs
     possible_moves =[]
     
     side_directions.each do |a,b|
@@ -28,7 +28,7 @@ class Pawn < Piece
     forward_directions = [[(sym * 1),0]]
     forward_directions << [(sym * 2),0] if first_move?
     side_directions  = [[(sym * 1),1],[(sym * 1),-1]]
-    [forward_directions,side_directions]
+    [forward_directions, side_directions]
   end  
   
   def first_move?
