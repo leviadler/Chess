@@ -162,13 +162,10 @@ class Pawn < Piece
       new_position = [@position[0] + a, @position[1] + b]
       possible_moves << new_position if valid_side_pos?(new_position)
     end 
-    p forward_directions
+    
     forward_directions.each do |a,b|
       new_position = [@position[0] + a, @position[1] + b]
-      p "pos", @position
-      p "new", new_position
       possible_moves << new_position if @board[new_position].nil?
-      #p possible_moves
     end 
     possible_moves
   end
