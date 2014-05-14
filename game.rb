@@ -46,5 +46,4 @@ if __FILE__ == $PROGRAM_NAME
   
   game = Game.new(p1, p2)
   game.play
-  
 end

@@ -11,7 +11,7 @@ class Board
   NUM_ROWS = 8
   
   def initialize(setup = false)
-    @grid = Array.new(8){Array.new(8)}
+    @grid = Array.new(NUM_ROWS){Array.new(NUM_ROWS)}
     setup_board if setup
   end 
   
@@ -134,7 +134,6 @@ class Board
     peices.each_with_index do |piece, col|
       piece.new(color, [row, col], self)
     end
-
   end
 end
 

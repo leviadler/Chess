@@ -10,13 +10,12 @@ class Piece
     @board[position] = self
   end
   
-  # work in progress
   def dup(new_board)
     self.class.new(self.color,self.position,new_board)
   end
   
   def moves
-    raise UnimplementedError
+    raise NotImplementedError
   end
   
   def valid_moves
@@ -40,6 +39,5 @@ class Piece
   def has_opponent?(pos)
     !@board[pos].nil? && @board[pos].color != self.color
   end
-  
-  
+   
 end

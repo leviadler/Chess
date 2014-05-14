@@ -4,19 +4,7 @@ class Pawn < Piece
   
   def moves
     forward_directions, side_directions = move_dirs
-    possible_moves =[]
-    
-    side_directions.each do |a,b|
-      new_position = [@position[0] + a, @position[1] + b]
-      possible_moves << new_position if valid_side_pos?(new_position)
-    end 
-    
-    forward_directions.each do |a,b|
-      new_position = [@position[0] + a, @position[1] + b]
-      break unless @board[new_position].nil? #stops jumping piece on first move
-      possible_moves << new_position
-    end 
-    possible_moves
+    generate_side_dirs(side_directions) + generate_forward_dirs(forward_directions)
   end
   
   def valid_side_pos?(pos)
@@ -34,6 +22,23 @@ class Pawn < Piece
   def first_move?
     (self.color == :w && self.position[0] == 6) ||
     (self.color == :b && self.position[0] == 1)
+  end
+  
+  def generate_side_dirs(directions)
+    directions.select do |a,b|
+      new_position = [@position[0] + a, @position[1] + b]
+      valid_side_pos?(new_position)
+    end 
+  end
+  
+  def generate_forward_dirs(directions)
+    forward_directions = []
+    directions.map do |a,b|
+      new_position = [@position[0] + a, @position[1] + b]
+      break unless @board[new_position].nil? #stops jumping piece on first move
+      forward_directions << new_position
+    end
+    forward_directions
   end
   
   def to_s
