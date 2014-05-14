@@ -19,6 +19,16 @@ class Piece
     raise UnimplementedError
   end
   
+  def valid_moves
+    self.moves.select {|move| !move_into_check?(move) }
+  end
+  
+  def move_into_check?(pos)
+    new_board = @board.dup
+    new_board.move!(self.position, pos)
+    new_board.in_check?(self.color)
+  end
+  
   def in_board?(position)
     position.all? {|coord| (coord >= 0) && (coord < 8) }
   end 
@@ -165,7 +175,8 @@ class Pawn < Piece
     
     forward_directions.each do |a,b|
       new_position = [@position[0] + a, @position[1] + b]
-      possible_moves << new_position if @board[new_position].nil?
+      break unless @board[new_position].nil? #stops jumping piece on first move
+      possible_moves << new_position
     end 
     possible_moves
   end

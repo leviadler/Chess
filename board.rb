@@ -22,6 +22,14 @@ class Board
     self[pos].nil?
   end
   
+  def dup
+    new_board = Board.new
+    @grid.flatten.each do |piece|
+      piece.dup(new_board) unless piece.nil?
+    end
+    new_board
+  end
+  
   def to_s
     puts "     a  b  c  d  e  f  g  h"
     puts "     0  1  2  3  4  5  6  7 "  #for debugging
@@ -66,15 +74,34 @@ class Board
     end
   end
   
+  def move!(start, end_pos)
+    # no error checking b/c program is passing the params
+    piece = self[start]
+    self[start] = nil
+    self[end_pos] = piece
+    self
+  end
+  
   def move(start, end_pos)
     raise "No piece to move at #{start}" if empty?(start)
     
     piece = self[start]
     
     raise "Invalid move!" unless piece.moves.include?(end_pos)
+    raise "Invalid move into check!" unless piece.valid_moves.include?(end_pos)
     
     self[start] = nil
     self[end_pos] = piece
+  end
+  
+  def checkmate?(color)
+    find_pieces(color).each do |piece| 
+      if !piece.valid_moves.empty?
+        p piece.position
+        p piece.valid_moves
+      end
+    end
+    find_pieces(color).all? {|piece| piece.valid_moves.empty? }
   end
   
   protected
@@ -114,15 +141,12 @@ if __FILE__ == $PROGRAM_NAME
   #k=King.new(:w,[0,0],b)
   #q=Queen.new(:w,[0,5],b)
   print b
-  
-  puts
-  b.move([6,2], [4,2])
+  b.move!([7,3], [2,6])
   print b
-  b.move([4,2], [3,2])
+  b.move!([1,5], [2,5])
   print b
-  b.move([3,2], [2,2])
+  b.move!([1,7], [2,7])
   print b
-  b.move([2,2], [1,2])
-  print b
+  p b.checkmate?(:b)
 end
 
