@@ -1,5 +1,12 @@
+
+
 class Player
+  
+  COL_LETTERS = ("a".."h").to_a
+  ROW_NUMBERS = ("1".."8").to_a.reverse
+  
 end
+
 
 class HumanPlayer < Player
   
@@ -25,7 +32,9 @@ class HumanPlayer < Player
   end
   
   def get_input
-    pos = gets.chomp.split(",").map{ |i| i.to_i }
+    input = gets.chomp.squeeze.split("")
+    [ROW_NUMBERS.index(input.last), 
+      COL_LETTERS.index(input.first)]
   end
   
 end
