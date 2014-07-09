@@ -41,8 +41,8 @@ class Game
 end
 
 if __FILE__ == $PROGRAM_NAME
-  p1 = HumanPlayer.new("Jack")
-  p2 = HumanPlayer.new("Jim")
+  p1 = HumanPlayer.new("Player 1")
+  p2 = HumanPlayer.new("Player 2")
 
   game = Game.new(p1, p2)
   game.play
